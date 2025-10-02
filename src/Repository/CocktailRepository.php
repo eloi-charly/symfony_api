@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Dto\CocktailQueryDto;
 use App\Entity\Cocktail;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,28 +17,33 @@ class CocktailRepository extends ServiceEntityRepository
         parent::__construct($registry, Cocktail::class);
     }
 
-//    /**
-//     * @return Cocktail[] Returns an array of Cocktail objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findAllWithQuery(CocktailQueryDto $query ){
+        $qb = $this->createQueryBuilder('cocktail');
+        
+         if ($query->name) {
+            $qb
+                ->andWhere('cocktail.name LIKE :name')
+                ->setParameter('name', "%$query->name%");
+        }
 
-//    public function findOneBySomeField($value): ?Cocktail
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if (null !== $query->isAlcoholic) {
+            $qb
+                ->andWhere('cocktail.isAlcoholic = :isAlcoholic')
+                ->setParameter('isAlcoholic', $query->isAlcoholic);
+        }
+
+        if ($query->difficulty) {
+            $qb
+                ->andWhere('cocktail.difficulty = :difficulty')
+                ->setParameter('difficulty', $query->difficulty);
+        }
+
+        $offset = ($query->page - 1) * $query->itemsPerPage;
+
+        $qb
+            ->setFirstResult($offset)
+            ->setMaxResults($query->itemsPerPage);
+
+        return $qb->getQuery()->getResult();
+    }
 }

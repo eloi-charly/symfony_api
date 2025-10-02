@@ -15,6 +15,7 @@ class Cocktail
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups('cocktail:read')]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
