@@ -46,4 +46,21 @@ class CocktailRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function remove(Cocktail $entity): void
+    {
+        $this->getEntityManager()->remove($entity);
+        $this->getEntityManager()->flush();
+    }
+
+    public function save(Cocktail $entity): void
+    {
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+    }
+
+    public  function update(Cocktail $entity): void
+    {
+        $this->getEntityManager()->flush();
+    }
 }

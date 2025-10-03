@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CocktailRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Cocktail
 {
     #[ORM\Id]
@@ -155,4 +156,15 @@ class Cocktail
 
         return $this;
     }
+
+    #[ORM\PrePersist]
+    public function onPrePersist(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void 
+    {
+        $this->updatedAt = new \DateTimeImmutable();
+    }   
 }

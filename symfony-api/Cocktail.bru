@@ -4,10 +4,30 @@ meta {
   seq: 1
 }
 
-get {
-  url: http://127.0.0.1:8001
-  body: none
+put {
+  url: http://127.0.0.1:8001/api/coctail/11
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "name": "Mojito Royal",
+    "description": "Un cocktail rafraîchissant à base de menthe, de citron vert et de champagne.",
+    "instructions": "Écraser les feuilles de menthe avec le sucre et le jus de citron vert. Ajouter le rhum et compléter avec du champagne. Servir avec des glaçons.",
+    "ingredients": [
+      "6 feuilles de menthe modireirer",
+      "2 cl de jus de citron vert",
+      "2 cuillères à café de sucre de canne",
+      "4 cl de rhum blanc",
+      "Champagne",
+      "Glaçons"
+    ],
+    "difficulty": 2,
+    "isAlcoholic": true,
+    "imageUrl": "https://example.com/images/mojito-royal.jpg"
+  }
+  
 }
 
 settings {
